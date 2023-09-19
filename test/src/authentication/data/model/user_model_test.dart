@@ -88,7 +88,6 @@ void main() {
       // final result = UserModel.fromJson(tJson);
 
       expect(result.name, equals(name));
-      expect(result, );
       //Assert
     });
   });
