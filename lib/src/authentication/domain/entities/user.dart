@@ -8,7 +8,7 @@ class User extends Equatable {
     required this.name,
   });
 
-  final int id;
+  final String id;
   final String createdAt;
   final String name;
   final String avatar;
@@ -18,11 +18,11 @@ class User extends Equatable {
           avatar: "_empty.avatar",
           createdAt: "_empty.createdAt",
           name: "_empty.name",
-          id: 1,
+          id: "1",
         );
 
   @override
-  List<Object?> get props => [id];
+  List<Object?> get props => [id, name, avatar];
 
   //* Instead of below code use equitable
   // Dart check refererance equality => It check whether it is checking to the same referance
