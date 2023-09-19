@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:tdd_block_lms/core/errors/exceptions.dart';
 import 'package:tdd_block_lms/core/utilities/constants.dart';
+import 'package:tdd_block_lms/core/utilities/typedef.dart';
 import 'package:tdd_block_lms/src/authentication/data/model/user_model.dart';
 
 abstract class AuthenticationRemoteDataSourse {
@@ -14,8 +15,8 @@ abstract class AuthenticationRemoteDataSourse {
   Future<List<UserModel>> getUsers();
 }
 
-const kCreateUserEndPoint = "/users";
-const kGetUsers = "/user";
+const kCreateUserEndPoint = "/api/test/users";
+const kGetUsers = "/api/test/users";
 
 class AuthenticationRemoteDataSrcImpl extends AuthenticationRemoteDataSourse {
   AuthenticationRemoteDataSrcImpl(this._client);
@@ -28,7 +29,7 @@ class AuthenticationRemoteDataSrcImpl extends AuthenticationRemoteDataSourse {
       required String avatar}) async {
     try {
       final response = await _client.post(
-          Uri.parse("$kBaseUrl$kCreateUserEndPoint"),
+          Uri.https(kBaseUrl, kCreateUserEndPoint),
           body: jsonEncode(
               {"createdAt": createdAt, "name": name, "avatar": avatar}));
       // Check make sure return right data
@@ -48,8 +49,22 @@ class AuthenticationRemoteDataSrcImpl extends AuthenticationRemoteDataSourse {
   }
 
   @override
-  Future<List<UserModel>> getUsers() {
-    // TODO: implement getUsers
-    throw UnimplementedError();
+  Future<List<UserModel>> getUsers() async {
+    try {
+      final response = await _client.get(Uri.https(kBaseUrl, kGetUsers));
+
+      if (response.statusCode != 200) {
+        throw APIExceptions(
+            message: response.body, statusCode: response.statusCode);
+      }
+
+      return List<DataMap>.from(jsonDecode(response.body) as List)
+          .map((e) => UserModel.fromMap(e))
+          .toList();
+    } on APIExceptions {
+      rethrow;
+    } catch (e) {
+      throw APIExceptions(message: e.toString(), statusCode: 500);
+    }
   }
 }
