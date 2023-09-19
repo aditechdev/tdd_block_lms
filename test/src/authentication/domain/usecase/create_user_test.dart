@@ -4,6 +4,8 @@ import 'package:mocktail/mocktail.dart';
 import 'package:tdd_block_lms/src/authentication/domain/repositories/authentication_repositories.dart';
 import 'package:tdd_block_lms/src/authentication/domain/usecase/create_user.dart';
 
+import 'authentication_repository_mock.dart';
+
 // What does the class depend on
 // Ans: Authentication Repository
 // How can we create a fake version on the dependency
@@ -11,7 +13,6 @@ import 'package:tdd_block_lms/src/authentication/domain/usecase/create_user.dart
 // How do we control what dependecy work
 // Ans: Using the mocktail API
 
-class MockAuthRepo extends Mock implements AuthenticationRepository {}
 
 void main() {
   late CreateUser usecase;
