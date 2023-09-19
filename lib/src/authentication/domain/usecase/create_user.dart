@@ -27,6 +27,13 @@ class CreateUserParam extends Equatable {
   final String name;
   final String avatar;
 
+  const CreateUserParam.empty()
+      : this(
+          avatar: "_empty.avatar",
+          createdAt: "_empty.createdAt",
+          name: "_empty.name",
+        );
+
   @override
   List<Object?> get props => [
         createdAt,
